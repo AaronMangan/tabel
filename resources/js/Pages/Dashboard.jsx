@@ -5,7 +5,37 @@ export default function Dashboard(props) {
     const propsChecker = () => {
         console.log(props);
     }
+
+    const createTile = (table, id) => {
+        return (
+            <div key={"id_" + id} className="bg-gray-500 p-4 text-white rounded-xl">
+                <div className="w-[25px] h-[25px] flex justify-between">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="#ffffff" d="M64 256l0-96 160 0 0 96L64 256zm0 64l160 0 0 96L64 416l0-96zm224 96l0-96 160 0 0 96-160 0zM448 256l-160 0 0-96 160 0 0 96zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z"/>
+                    </svg>
+                </div>
+                {table}
+            </div>
+        )
+    };
+
+    const itemsNotFound = () => {
+        return (
+            <div className="w-100 flex justify-center align-center">
+                <div className="w-[50px] h-[50px] d-flex justify-center align-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="#c4c4c4" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24l0 112c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-112c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                    </svg>
+                </div>
+                <div className="w-100 d-flex justify-center align-center px-3">
+                    <h2 className="text text-2xl">No Items Found</h2>
+                </div>
+            </div>
+        );
+    };
+
     propsChecker();
+    
     return (
         <AuthenticatedLayout
             header={null}
@@ -29,18 +59,11 @@ export default function Dashboard(props) {
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="container mx-auto p-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    { props && props.tables && props.tables.map((table, index) => {
-                                        return (
-                                            <div key={"id_" + index} className="bg-gray-500 p-4 text-white rounded-xl">
-                                                <div className="w-[25px] h-[25px] flex justify-between">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                        <path fill="#ffffff" d="M64 256l0-96 160 0 0 96L64 256zm0 64l160 0 0 96L64 416l0-96zm224 96l0-96 160 0 0 96-160 0zM448 256l-160 0 0-96 160 0 0 96zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z"/>
-                                                    </svg>
-                                                </div>
-                                                {table}
-                                            </div>
-                                        )
-                                    })}
+                                    {
+                                        props && props.tables ? props.tables.map((table, index) => {
+                                            return createTile(table, index);
+                                        }) : itemsNotFound()
+                                    }
                                 </div>
                             </div>
                         </div>
